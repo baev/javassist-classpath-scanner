@@ -4,6 +4,7 @@ import javassist.bytecode.ClassFile;
 import javassist.bytecode.MethodInfo;
 import javassist.bytecode.annotation.Annotation;
 import org.junit.Test;
+import ru.yandex.qatools.allure.annotations.Features;
 
 import java.net.URISyntaxException;
 import java.util.List;
@@ -86,11 +87,29 @@ public class JavassistUtilsTest {
     }
 
     @Test
+    public void shouldFindClassAnnotationByClass() throws Exception {
+        ClassFile next = getClassFile();
+        Annotation annotation = JavassistUtils.findOne(next, Features.class).get();
+
+        assertThat(annotation.getTypeName(), is(FEATURES));
+    }
+
+    @Test
     public void shouldFindMethodAnnotation() throws Exception {
         ClassFile next = getClassFile();
         MethodInfo firstTest = next.getMethod(FIRST_TEST);
 
         Annotation annotation = JavassistUtils.findOne(firstTest, FEATURES).get();
+
+        assertThat(annotation.getTypeName(), is(FEATURES));
+    }
+
+    @Test
+    public void shouldFindMethodAnnotationByClass() throws Exception {
+        ClassFile next = getClassFile();
+        MethodInfo firstTest = next.getMethod(FIRST_TEST);
+
+        Annotation annotation = JavassistUtils.findOne(firstTest, Features.class).get();
 
         assertThat(annotation.getTypeName(), is(FEATURES));
     }

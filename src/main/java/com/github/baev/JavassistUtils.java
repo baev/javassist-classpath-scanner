@@ -121,10 +121,24 @@ public final class JavassistUtils {
     }
 
     /**
+     * Find method annotation by given annotation class.
+     */
+    public static Optional<Annotation> findOne(MethodInfo method, Class<?> annotationType) {
+        return findOne(getAnnotations(method), annotationType.getCanonicalName());
+    }
+
+    /**
      * Find method annotation by given type.
      */
     public static Optional<Annotation> findOne(MethodInfo method, String annotationType) {
         return findOne(getAnnotations(method), annotationType);
+    }
+
+    /**
+     * Find class annotation by given type.
+     */
+    public static Optional<Annotation> findOne(ClassFile clazz, Class<?> annotationType) {
+        return findOne(getAnnotations(clazz), annotationType.getCanonicalName());
     }
 
     /**

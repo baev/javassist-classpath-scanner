@@ -92,6 +92,12 @@
             <version>1.8</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>ru.yandex.qatools.allure</groupId>
+            <artifactId>allure-java-annotations</artifactId>
+            <version>1.4.19</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
