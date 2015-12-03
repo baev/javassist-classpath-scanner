@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Javassist classpath scanner by baev</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/baev/javassist-classpath-scanner">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/baev/javassist-classpath-scanner/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/baev/javassist-classpath-scanner/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Javassist classpath scanner</h1>
+          <p>The simple classpath scanner for Javassist</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/baev">baev</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h2>
+<a id="simple-classpath-scanner-for-javassist" class="anchor" href="#simple-classpath-scanner-for-javassist" aria-hidden="true"><span class="octicon octicon-link"></span></a>Simple classpath scanner for Javassist</h2>
+
+<p><a href="https://github.com/baev/javassist-classpath-scanner/releases/latest"><img src="http://github-release-version.herokuapp.com/github/baev/javassist-classpath-scanner/release.svg?style=flat" alt="release"></a> <a href="https://maven-badges.herokuapp.com/maven-central/com.github.baev/javassist-classpath-scanner"><img src="https://maven-badges.herokuapp.com/maven-central/com.github.baev/javassist-classpath-scanner/badge.svg?style=flat" alt="Maven Central"></a> <a href="http://ci.qatools.ru/job/javassist-classpath-scanner_master-deploy/lastBuild/"><img src="https://img.shields.io/jenkins/s/http/ci.qatools.ru/javassist-classpath-scanner_master-deploy.svg?style=flat" alt="build"></a>
+<a href="http://sonar.qatools.ru/dashboard/index/com.github.baev:javassist-classpath-scanner"><img src="https://img.shields.io/sonar/http/sonar.qatools.ru/com.github.baev:javassist-classpath-scanner/coverage.svg?style=flat" alt="covarage"></a></p>
+
+<p>Lightweight javaassist classpath scanner. </p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>The artifact avaliable at Maven Central:</p>
+
+<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">dependency</span>&gt;
+    &lt;<span class="pl-ent">groupId</span>&gt;com.github.baev&lt;/<span class="pl-ent">groupId</span>&gt;
+    &lt;<span class="pl-ent">artifactId</span>&gt;javassist-classpath-scanner&lt;/<span class="pl-ent">artifactId</span>&gt;
+    &lt;<span class="pl-ent">version</span>&gt;RELEASE&lt;/<span class="pl-ent">version</span>&gt;
+&lt;/<span class="pl-ent">dependency</span>&gt;</pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">List&lt;<span class="pl-smi">URI</span>&gt;</span> classpath <span class="pl-k">=</span> <span class="pl-c1">...</span>
+
+<span class="pl-smi">ClasspathScanner</span> scanner <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">ClasspathScanner</span>();
+classpath<span class="pl-k">.</span>forEach(scanner<span class="pl-k">::</span>scan);
+<span class="pl-k">Set&lt;<span class="pl-smi">ClassFile</span>&gt;</span> <span class="pl-k">=</span> scanner<span class="pl-k">.</span>getClasses();</pre></div>
+
+<p>Then you can do whatever you need with the found classes. For example, you can find all the JUnit tests using code like this: </p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">boolean</span> isTestMethod(<span class="pl-smi">MethodInfo</span> methodInfo) {
+    <span class="pl-k">return</span> <span class="pl-smi">JavassistUtils</span><span class="pl-k">.</span>isAnnotated(methodInfo, <span class="pl-s"><span class="pl-pds">"</span>org.junit.Test<span class="pl-pds">"</span></span>);
+}
+
+<span class="pl-k">public</span> <span class="pl-k">List&lt;<span class="pl-smi">MethodInfo</span>&gt;</span> getTestMethods(<span class="pl-smi">ClassFile</span> clazz) {
+    <span class="pl-k">return</span> <span class="pl-smi">JavassistUtils</span><span class="pl-k">.</span>getMethods(clazz, <span class="pl-v">this</span><span class="pl-k">::</span>isTestMethod);
+}
+
+<span class="pl-k">List&lt;<span class="pl-smi">MethodInfo</span>&gt;</span> testMethods <span class="pl-k">=</span> scanner<span class="pl-k">.</span>getClasses()<span class="pl-k">.</span>stream()
+    .map(<span class="pl-v">this</span><span class="pl-k">::</span>getTestMethods)
+    .collect(<span class="pl-smi">Collectors</span><span class="pl-k">.</span>toList());</pre></div>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
