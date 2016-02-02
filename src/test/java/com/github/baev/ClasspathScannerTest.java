@@ -35,6 +35,8 @@ public class ClasspathScannerTest {
 
     public static final String WITHOUTCLASSESJAR = "withoutclassesjar-1.0-SNAPSHOT.jar";
 
+    public static final String WITHOUTMANIFEST = "withoutmanifest.jar";
+
     public static final String FIRST_TEST = "com.github.baev.FirstTest";
 
     public static final String SECOND_TEST = "com.github.baev.SecondTest";
@@ -88,6 +90,11 @@ public class ClasspathScannerTest {
         List<String> strings = classes.stream().map(ClassFile::getName).collect(Collectors.toList());
 
         assertThat(strings, hasItems(FIRST_TEST, SECOND_TEST));
+    }
+
+    @Test
+    public void shouldNotFailIfNoManifest() throws Exception {
+        getClassFiles(WITHOUTMANIFEST);
     }
 
     public static Set<ClassFile> getClassFiles(URI... uris) throws URISyntaxException {

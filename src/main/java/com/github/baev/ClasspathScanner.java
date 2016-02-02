@@ -177,8 +177,9 @@ public class ClasspathScanner {
      * @return the list of classpath elements.
      */
     protected List<String> classpath(Manifest manifest) {
-        String classpath = manifest.getMainAttributes().getValue(Attributes.Name.CLASS_PATH);
-        return Optional.ofNullable(classpath)
+        return Optional.ofNullable(manifest)
+                .map(Manifest::getMainAttributes)
+                .map(attributes -> attributes.getValue(Attributes.Name.CLASS_PATH))
                 .map(this::splitClasspath)
                 .orElse(Collections.emptyList());
     }
